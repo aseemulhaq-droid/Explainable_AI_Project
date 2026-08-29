@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to Pulse XAI — Explainable AI Medical Diagnosis System by Cardiff Metropolitan University / ICBT.">
+  <title>Sign In — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="card auth-card login-card" style="border-top:2px solid var(--accent-cyan);">
+
+      <!-- Brand -->
+      <div class="auth-brand">
+        <div class="brand-logo">XAI</div>
+        <h1>Pulse XAI</h1>
+        <p class="muted">XAI Medical Diagnosis System · Cardiff Met / ICBT</p>
+      </div>
+
+      <!-- Alerts -->
+      <div id="errorAlert"   class="alert alert-error   hidden" role="alert"></div>
+      <div id="successAlert" class="alert alert-success hidden" role="status"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" novalidate>
+
+        <!-- Role Selector (above form for clarity) -->
+        <div style="margin-bottom:20px;">
+          <label class="form-label" style="margin-bottom:10px;">Login as</label>
+          <div class="role-selector" style="justify-content:flex-start; margin-top:0; gap:8px;">
+            <button type="button" data-role="doctor"     class="role-btn active">👨‍⚕️ Doctor</button>
+            <button type="button" data-role="admin"      class="role-btn">🛡️ Admin</button>
+            <button type="button" data-role="researcher" class="role-btn">🔬 Researcher</button>
+          </div>
+          <input type="hidden" id="selectedRole" value="doctor">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-with-icon">
+            <span class="icon">✉️</span>
+            <input type="email" id="email" class="form-control" required
+                   autocomplete="email" placeholder="you@hospital.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-with-icon">
+            <span class="icon">🔒</span>
+            <input type="password" id="password" class="form-control" required
+                   autocomplete="current-password" placeholder="••••••••">
+            <button type="button" id="togglePassword" class="icon-btn" title="Show/hide password">👁️</button>
+          </div>
+        </div>
+
+        <div class="auth-row">
+          <label class="checkbox">
+            <input type="checkbox" id="rememberMe"> Remember me
+          </label>
+          <a href="forgot-password.html">Forgot password?</a>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn btn-gradient" style="margin-top:4px;">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "dr.alice.walker@hospital.org": {
+    "type": "reset",
+    "otp": "485122",
+    "timestamp": 1787548636.433419
+  },
+  "your_real_email@gmail.com": {
+    "type": "registration",
+    "otp": "663493",
+    "timestamp": 1787549307.3613896
+  },
+  "sampletestmail6@gmail.com": {
+    "type": "password-reset",
+    "otp": "834060",
+    "timestamp": 1787722106.9661474
+  },
+  "test@example.com": {
+    "type": "registration",
+    "otp": "868754",
+    "timestamp": 1787550875.1970997
+  },
+  "frontend.test.1787634426@hospital.org": {
+    "type": "password-reset",
+    "otp": "671215",
+    "timestamp": 1787634434.7229066
+  },
+  "admin@gmail.com": {
+    "type": "registration",
+    "otp": "075319",
+    "timestamp": 1787651737.886251
+  }
+}

@@ -1,0 +1,59 @@
+<div class="card sidebar-card">
+  <!-- Brand -->
+  <div class="nav-brand">
+    <span style="font-size:1.3rem">⚡</span>
+    <span>Pulse XAI</span>
+  </div>
+
+  <!-- Navigation -->
+  <div style="flex:1; overflow-y:auto;">
+    <div class="nav-section-label">Navigation</div>
+    <nav class="nav-links">
+      <a href="dashboard-doctor.html" class="nav-item" data-role="doctor">
+        <span>🏠</span> Dashboard
+      </a>
+      <a href="new-diagnosis.html" class="nav-item" data-role="doctor researcher">
+        <span>🔬</span> New Diagnosis
+      </a>
+      <a href="history.html" class="nav-item" data-role="doctor researcher admin">
+        <span>📋</span> Patient History
+      </a>
+      <a href="patient-compare.html" class="nav-item" data-role="doctor researcher">
+        <span>⚖️</span> Compare
+      </a>
+      <a href="dashboard-researcher.html" class="nav-item" data-role="researcher">
+        <span>📊</span> Research Dashboard
+      </a>
+      <a href="dashboard-admin.html" class="nav-item" data-role="admin">
+        <span>🛡️</span> Admin Panel
+      </a>
+    </nav>
+
+    <div class="nav-section-label" style="margin-top:12px;">Account</div>
+    <nav class="nav-links" style="margin-top:0;">
+      <a href="settings.html" class="nav-item" data-role="doctor researcher admin">
+        <span>⚙️</span> Settings
+      </a>
+    </nav>
+  </div>
+
+  <!-- User Profile Block -->
+  <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+      <div id="sidebarAvatar" style="
+        width: 42px; height: 42px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; color: #fff; font-size: 1rem; flex-shrink:0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      ">U</div>
+      <div style="min-width:0;">
+        <div id="sidebarUserName" style="font-weight:600; font-size:0.92rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">User</div>
+        <div id="sidebarUserRole" class="small text-secondary" style="text-transform:capitalize;">Role</div>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-auto" id="logoutBtn" style="width:100%; font-size:0.88rem;">
+      <span>🚪</span> Sign Out
+    </button>
+  </div>
+</div>

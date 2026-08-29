@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Settings - Pulse XAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .settings-layout { gap:24px; align-items:start; }
+    .settings-content { min-width:0; padding-top:2px; }
+    .settings-grid { margin:24px 0 0; max-width:none; }
+    .avatar-preview { width:96px; height:96px; border-radius:50%; background:var(--card-bg); display:flex; align-items:center; justify-content:center; font-size:28px; }
+    @media (max-width: 768px) {
+      .settings-grid > div:first-child { align-items:flex-start; flex-direction:column; }
+      .settings-grid > div:last-child { flex-wrap:wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container main-content">
+    <div class="grid app-layout settings-layout">
+      <aside data-include="inc/sidebar.html"></aside>
+      <main class="settings-content">
+        <h2>Profile Settings</h2>
+      <p class="text-secondary">Change your display name and profile picture for the dashboard.</p>
+
+      <div class="card settings-grid">
+        <div style="display:flex; gap:18px; align-items:center;">
+          <div id="avatarPreview" class="avatar-preview">U</div>
+          <div style="flex:1">
+            <label class="form-label" for="displayName">Display Name</label>
+            <input id="displayName" class="form-control" placeholder="Your name">
+            <div style="margin-top:12px;"><label class="form-label" for="avatarFile">Profile Picture</label><input id="avatarFile" type="file" accept="image/*" class="form-control"></div>
+            <div class="small text-secondary" style="margin-top:8px">Profile changes update this browser immediately. Save also attempts to sync them with the server.</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:16px;">
+          <button id="saveProfile" class="btn" style="background:linear-gradient(90deg,var(--accent-cyan),var(--accent-purple)); color:#fff">Save</button>
+          <button id="resetProfile" class="btn btn-outline">Reset</button>
+          <div id="saveMsg" class="small" style="margin-left:12px; color:var(--text-secondary)"></div>
+        </div>
+      </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

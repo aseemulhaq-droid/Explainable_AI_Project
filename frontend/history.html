@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse, search, filter, and export your patient diagnosis history on Pulse XAI.">
+  <title>Patient History — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container main-content">
+    <div class="app-layout grid">
+
+      <!-- Sidebar -->
+      <aside data-include="inc/sidebar.html"></aside>
+
+      <!-- Main Content -->
+      <main>
+        <div class="card">
+
+          <!-- Header -->
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h2 style="margin-bottom:4px;">Patient History</h2>
+              <p class="text-secondary">Search, filter, and export diagnosis records</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button id="exportCsv" class="btn btn-outline btn-auto">
+                📤 Export CSV
+              </button>
+              <button id="compareBtn" class="btn btn-secondary btn-auto">
+                ⚖️ Compare Selected
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Filters -->
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; align-items:center;">
+            <input id="searchInput" class="form-control" placeholder="🔍 Search by patient name or diagnosis..."
+                   style="flex:1; min-width:200px;">
+            <select id="filterDisease" class="form-control" style="width:180px;">
+              <option value="">All diseases</option>
+              <option value="diabetes">Diabetes</option>
+              <option value="heart">Heart Disease</option>
+              <option value="cancer">Breast Cancer</option>
+              <option value="liver">Liver Disease</option>
+            </select>
+            <select id="filterResult" class="form-control" style="width:160px;">
+              <option value="">All results</option>
+              <option value="DETECTED">Detected</option>
+              <option value="NOT_DETECTED">Not Detected</option>
+            </select>
+          </div>
+
+          <!-- History Table -->
+          <div class="table-container">
+            <table id="historyTable">
+              <colgroup>
+                <col style="width:48px">
+                <col style="width:240px">
+                <col style="width:170px">
+                <col style="width:110px">
+                <col style="width:190px">
+                <col style="width:100px">
+                <col style="width:120px">
+                <col style="width:110px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Patient</th>
+                  <th>Disease</th>
+                  <th>Result</th>
+                  <th>Confidence</th>
+                  <th>Risk</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="8" style="text-align:center; padding:32px; color:var(--text-secondary);">
+                    <div class="spinner" style="margin:0 auto 10px;"></div>
+                    Loading patient history...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detailModal" class="modal-overlay">
+    <div class="modal-content card">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>

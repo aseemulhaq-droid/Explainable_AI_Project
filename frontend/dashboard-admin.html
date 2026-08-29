@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pulse XAI Admin Dashboard — manage users, view system stats, and audit login history.">
+  <title>Admin Dashboard — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="container main-content">
+    <div class="app-layout grid">
+
+      <!-- Sidebar -->
+      <aside data-include="inc/sidebar.html"></aside>
+
+      <!-- Main Content -->
+      <main>
+
+        <!-- Page Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="margin-bottom:4px;">Admin Dashboard 🛡️</h2>
+            <p class="text-secondary">System overview, user management, and access control</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input id="adminSearch" class="form-control" placeholder="🔍 Search users, emails..." style="width:240px;">
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <section class="grid grid-cols-4 mb-3">
+          <div class="card">
+            <div class="stat-card-icon cyan">👥</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Total Users</h4>
+            <div id="adminTotalUsers" class="stat-card-number">—</div>
+            <p class="small text-secondary" style="margin-top:6px;">All platform accounts</p>
+          </div>
+          <div class="card card-purple">
+            <div class="stat-card-icon purple">👨‍⚕️</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Active Doctors</h4>
+            <div id="adminActiveDoctors" class="stat-card-number">—</div>
+            <p class="small text-secondary" style="margin-top:6px;">Approved access</p>
+          </div>
+          <div class="card card-red">
+            <div class="stat-card-icon red">📋</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Total Diagnoses</h4>
+            <div id="adminTotalDiagnoses" class="stat-card-number">—</div>
+            <p class="small text-secondary" id="adminDetectedRate" style="margin-top:6px;">— detected rate</p>
+          </div>
+          <div class="card card-green">
+            <div class="stat-card-icon green">🔍</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Access Reviews</h4>
+            <div id="adminPending" class="stat-card-number">—</div>
+            <p class="small text-secondary" style="margin-top:6px;">Suspended / revoked</p>
+          </div>
+        </section>
+
+        <!-- Overview + Quick Actions Row -->
+        <section class="grid grid-cols-2 mb-3">
+          <!-- Recent Activity -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <div>
+                <h3 style="margin-bottom:3px;">Recent Activity</h3>
+                <p class="small text-secondary">Latest platform diagnoses</p>
+              </div>
+              <a href="history.html" style="font-size:0.85rem;">View all →</a>
+            </div>
+            <div id="adminRecent">
+              <div class="chart-placeholder" style="height:80px;">
+                <div class="spinner"></div>
+                <span>Loading activity...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <div style="margin-bottom:16px;">
+              <h3 style="margin-bottom:3px;">Quick Actions</h3>
+              <p class="small text-secondary">Common administration tasks</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <button class="btn btn-gradient btn-auto" id="reviewAccounts">
+                👥 Review Account Permissions
+              </button>
+              <button class="btn btn-outline btn-auto" id="viewLogins">
+                🔑 View Login History
+              </button>
+            </div>
+            <div style="margin-top:20px; padding:16px; background:rgba(0,212,232,0.04); border-radius:12px; border:1px solid rgba(0,212,232,0.1);">
+              <p class="small" style="color:var(--accent-cyan); font-weight:600; margin-bottom:6px;">⚡ System Status</p>
+              <p class="small text-secondary">All 4 AI models operational. MySQL connected.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Account Permissions Management -->
+        <section class="card mb-3 admin-management">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="margin-bottom:3px;">Account Permissions</h3>
+              <p class="small text-secondary">Approve, suspend, or revoke doctor and researcher access</p>
+            </div>
+            <select id="roleFilter" class="form-control" style="width:180px;">
+              <option value="all">All roles</option>
+              <option value="doctor">Doctors</option>
+              <option value="researcher">Researchers</option>
+            </select>
+          </div>
+          <div class="table-container">
+            <table id="managedUsersTable">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Institution</th>
+                  <th>Created</th>
+                  <th>Access</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="6" style="text-align:center; padding:24px; color:var(--text-secondary);">
+                    <div class="spinner" style="margin:0 auto 8px;"></div>
+                    Loading accounts...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Login History -->
+        <section class="card" id="loginHistoryPanel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="margin-bottom:3px;">Login History</h3>
+              <p class="small text-secondary">Access events for all platform users</p>
+            </div>
+            <span class="badge badge-cyan" style="animation: none;">🔴 Live Audit</span>
+          </div>
+          <div class="table-container">
+            <table id="loginHistoryTable">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Result</th>
+                  <th>IP Address</th>
+                  <th>Date &amp; Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="6" style="text-align:center; padding:24px; color:var(--text-secondary);">
+                    <div class="spinner" style="margin:0 auto 8px;"></div>
+                    Loading login history...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

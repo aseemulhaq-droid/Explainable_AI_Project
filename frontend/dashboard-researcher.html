@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pulse XAI Researcher Dashboard — model metrics, LIME analysis, and dataset insights.">
+  <title>Researcher Dashboard — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container main-content">
+    <div class="app-layout grid">
+
+      <!-- Sidebar -->
+      <aside data-include="inc/sidebar.html"></aside>
+
+      <!-- Main Content -->
+      <main>
+
+        <!-- Page Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="margin-bottom:4px;">
+              Researcher Dashboard <span style="color:var(--accent-cyan);">📊</span>
+            </h2>
+            <p class="text-secondary">Model performance metrics, LIME analysis, and dataset insights</p>
+          </div>
+          <a href="new-diagnosis.html" class="btn btn-gradient btn-auto">
+            🔬 Run Diagnosis
+          </a>
+        </div>
+
+        <!-- Stat Cards -->
+        <section class="grid grid-cols-4 mb-3">
+          <div class="card">
+            <div class="stat-card-icon cyan">📋</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Cases Analyzed</h4>
+            <div id="stat1" class="stat-card-number">—</div>
+          </div>
+          <div class="card card-purple">
+            <div class="stat-card-icon purple">🤖</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Active Models</h4>
+            <div id="stat2" class="stat-card-number">—</div>
+          </div>
+          <div class="card card-green">
+            <div class="stat-card-icon green">🎯</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Avg. Accuracy</h4>
+            <div id="stat3" class="stat-card-number">—</div>
+          </div>
+          <div class="card card-yellow">
+            <div class="stat-card-icon yellow">🗂️</div>
+            <h4 class="mb-1 text-secondary" style="font-size:0.82rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;">Datasets In Use</h4>
+            <div id="stat4" class="stat-card-number">—</div>
+          </div>
+        </section>
+
+        <!-- Charts Row -->
+        <section class="grid grid-cols-2 mb-3">
+          <div class="card">
+            <h4 class="mb-1">Feature Importance (LIME)</h4>
+            <p class="small text-secondary mb-2">Aggregated feature contributions across all models</p>
+            <div id="limeOverview">
+              <div class="chart-placeholder">
+                <div class="chart-placeholder-icon">📊</div>
+                <span>Loading LIME overview...</span>
+                <div class="spinner" style="margin:8px auto 0;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h4 class="mb-1">Risk Distribution Heatmap</h4>
+            <p class="small text-secondary mb-2">Risk level breakdown per disease model</p>
+            <div id="riskHeatmap">
+              <div class="chart-placeholder">
+                <div class="chart-placeholder-icon">🗺️</div>
+                <span>Loading heatmap...</span>
+                <div class="spinner" style="margin:8px auto 0;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Analyses Table -->
+        <section class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="margin-bottom:3px;">Recent Analyses</h3>
+              <p class="small text-secondary">Latest 50 diagnosis records on this platform</p>
+            </div>
+            <a href="history.html" class="btn btn-outline btn-auto" style="font-size:0.85rem; padding:8px 16px;">
+              View All →
+            </a>
+          </div>
+          <div id="recent" class="table-container">
+            <div class="chart-placeholder" style="height:100px;">
+              <div class="spinner"></div>
+              <span>Loading records...</span>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

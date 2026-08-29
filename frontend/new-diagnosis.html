@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Run a new AI-powered medical diagnosis with LIME explainability on Pulse XAI.">
+  <title>New Diagnosis — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <style>
+    /* Step wizard override for horizontal layout */
+    .diag-wizard {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      margin-bottom: 28px;
+      background: var(--bg-color-card);
+      border-radius: 14px;
+      padding: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+    .diag-step {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 8px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .diag-step.active {
+      background: linear-gradient(135deg, rgba(0,212,232,0.12), rgba(124,58,237,0.08));
+      color: var(--accent-cyan);
+    }
+    .diag-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--bg-color-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+    .diag-step.active .diag-step-num {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #fff;
+    }
+
+    /* Disease selection cards */
+    .disease-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .disease-card {
+      cursor: pointer;
+      padding: 28px 20px;
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .disease-card:hover { transform: translateY(-4px); }
+    .disease-card.active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 4px rgba(0,212,232,0.1), var(--shadow-glow);
+    }
+    .disease-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container main-content">
+    <div class="app-layout grid">
+
+      <!-- Sidebar -->
+      <aside data-include="inc/sidebar.html"></aside>
+
+      <!-- Main Content -->
+      <main>
+
+        <!-- Page Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div>
+            <h2 style="margin-bottom:4px;">New Diagnosis</h2>
+            <p class="text-secondary">Step-by-step AI-powered medical assessment with LIME explanations</p>
+          </div>
+        </div>
+
+        <!-- Step Wizard -->
+        <div class="diag-wizard">
+          <div class="diag-step active" id="ds1">
+            <div class="diag-step-num">1</div>
+            <span>Select Disease</span>
+          </div>
+          <div class="diag-step" id="ds2">
+            <div class="diag-step-num">2</div>
+            <span>Enter Data</span>
+          </div>
+          <div class="diag-step" id="ds3">
+            <div class="diag-step-num">3</div>
+            <span>View Result</span>
+          </div>
+          <div class="diag-step" id="ds4">
+            <div class="diag-step-num">4</div>
+            <span>Download</span>
+          </div>
+        </div>
+
+        <!-- STEP 1: Disease Selection -->
+        <section id="step-disease">
+          <div class="disease-grid">
+            <div class="card disease-card" data-disease="diabetes">
+              <div class="disease-icon-box" style="background:rgba(0,212,232,0.1);">💧</div>
+              <h3>Diabetes</h3>
+              <p class="small text-secondary">768 patients · 8 clinical features</p>
+            </div>
+            <div class="card disease-card" data-disease="heart">
+              <div class="disease-icon-box" style="background:rgba(239,68,68,0.1);">❤️</div>
+              <h3>Heart Disease</h3>
+              <p class="small text-secondary">303 patients · 13 clinical features</p>
+            </div>
+            <div class="card disease-card" data-disease="cancer">
+              <div class="disease-icon-box" style="background:rgba(124,58,237,0.1);">🔬</div>
+              <h3>Breast Cancer</h3>
+              <p class="small text-secondary">569 patients · 30 clinical features</p>
+            </div>
+            <div class="card disease-card" data-disease="liver">
+              <div class="disease-icon-box" style="background:rgba(245,158,11,0.1);">🛡️</div>
+              <h3>Liver Disease</h3>
+              <p class="small text-secondary">583 patients · 10 clinical features</p>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button id="toPatientBtn" class="btn btn-gradient btn-auto" style="padding:12px 32px; border-radius:24px;">
+              Continue → Enter Patient Data
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 2: Patient Data Entry -->
+        <section id="step-patient" class="hidden card mb-3">
+          <h3 style="margin-bottom:6px;">Patient Details</h3>
+          <p class="small text-secondary" style="margin-bottom:20px;">Enter patient demographics and clinical measurements</p>
+          <form id="patientForm">
+            <div class="form-row" style="grid-template-columns:repeat(3,1fr);">
+              <div class="form-group">
+                <label class="form-label">Patient Name</label>
+                <input id="patient_name" class="form-control" required placeholder="Full name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Age</label>
+                <input id="age" type="number" class="form-control" required placeholder="e.g. 45" min="1" max="120">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select id="gender" class="form-control">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dynamic feature fields injected by JS -->
+            <div id="featureFields" style="margin-top:8px;"></div>
+
+            <div style="display:flex; gap:12px; margin-top:20px; justify-content:space-between;">
+              <button type="button" class="btn btn-outline btn-auto" id="backToDisease">
+                ← Back
+              </button>
+              <button type="submit" class="btn btn-gradient btn-auto" id="predictBtn" style="padding:12px 32px;">
+                🤖 Run AI Prediction
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- STEP 3: Results -->
+        <section id="step-results" class="hidden">
+
+          <!-- Prediction Result Banner -->
+          <div class="card mb-3" style="padding:28px; display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+            <div style="flex:1; min-width:200px;">
+              <h1 id="resultHeader" style="font-size:2rem; margin-bottom:8px; color:var(--accent-green);">—</h1>
+              <p id="resultSub" class="text-secondary" style="margin-bottom:16px;">Based on your clinical measurements</p>
+
+              <div style="margin-bottom:12px;">
+                <div style="height:10px; border-radius:10px; overflow:hidden; background:rgba(255,255,255,0.06);">
+                  <div id="confidenceFill" class="confidence-fill" style="height:100%; width:0%; transition:width 1s ease;"></div>
+                </div>
+                <p id="confidenceLabel" class="small text-secondary" style="margin-top:8px;">— Confidence</p>
+              </div>
+
+              <div id="riskPill" style="margin-top:6px;"></div>
+            </div>
+
+            <div style="
+              width: 160px; height: 160px; border-radius: 50%; flex-shrink:0;
+              display: flex; align-items: center; justify-content: center;
+              background: radial-gradient(circle at center, rgba(0,212,232,0.12), rgba(124,58,237,0.06));
+              box-shadow: 0 0 0 12px rgba(0,212,232,0.04);
+            ">
+              <div id="resultIconInner" style="
+                width: 80px; height: 80px; border-radius: 50%;
+                background: var(--bg-color-card);
+                display: flex; align-items: center; justify-content: center;
+                font-size: 2.2rem;
+                box-shadow: var(--shadow-card);
+              ">🔒</div>
+            </div>
+          </div>
+
+          <!-- LIME Chart + Risk Assessment -->
+          <div style="display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:20px;">
+            <div class="card">
+              <h3 style="margin-bottom:4px;">Why did the AI make this decision?</h3>
+              <p class="small text-secondary" style="margin-bottom:16px;">Feature Importance Analysis — LIME Algorithm</p>
+              <canvas id="limeChart" height="260"></canvas>
+              <p id="limeShortExplain" class="small text-secondary" style="margin-top:12px;">
+                Feature importance (LIME) shows which measurements influenced the prediction most.
+              </p>
+            </div>
+            <div class="card">
+              <h3 style="margin-bottom:4px;">Clinical Risk Assessment</h3>
+              <p class="small text-secondary" style="margin-bottom:12px;">Measurements vs. normal ranges</p>
+              <div id="riskTableContainer" class="table-container"></div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="downloadBtn" class="btn btn-gradient btn-auto" style="padding:12px 24px; border-radius:24px;">
+              📄 Download PDF Report
+            </button>
+            <button id="newDiagBtn" class="btn btn-outline btn-auto" style="padding:12px 24px; border-radius:24px;">
+              🔬 New Diagnosis
+            </button>
+            <button id="saveHistoryBtn" class="btn btn-secondary btn-auto" style="padding:12px 24px; border-radius:24px;">
+              💾 Save to History
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/diagnosis.js"></script>
+</body>
+</html>

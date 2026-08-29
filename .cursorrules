@@ -1,0 +1,83 @@
+# Explainable AI Medical Diagnosis System — Project Rules
+
+This is a university final-year project. Read this file fully before making
+any changes. These rules apply to EVERY task, every conversation, without
+needing to be repeated.
+
+## PROTECTED FILES — NEVER MODIFY, REWRITE, OR "IMPROVE"
+
+These are already built, tested, and verified working end-to-end:
+
+- models/neural_network.py
+- models/train.py
+- models/lime_explainer.py
+- models/risk_calculator.py
+- server/database/queries.py
+- server/auth.py
+- server/otp_service.py
+- server/server.py
+- server/api_handler.py
+- server/routes/\*.py
+
+If a task seems to require changing one of these, STOP and ask first rather
+than editing it.
+
+## STRICT TECH STACK RULES
+
+- AI Engine (models/): Pure Python + NumPy ONLY. No TensorFlow, scikit-learn,
+  PyTorch, or any ML library. This is a hard academic requirement.
+- Frontend: Pure HTML5 + CSS3 + Vanilla JavaScript ONLY. No React, Vue,
+  Angular, TypeScript, Tailwind, or any build tool/framework. Chart.js via
+  CDN is the only external library allowed.
+- Backend: Python's built-in http.server module only. No Flask/Django/FastAPI.
+- Database: MySQL via pymysql (already configured in
+  server/database/db_connection.py — do not change its connection method).
+
+## VERIFIED WORKING BACKEND — ACTUAL DETAILS (not the original spec's assumptions)
+
+- Server runs on http://localhost:8081 (port 8080 is blocked by Windows on
+  this machine, server auto-falls-back to 8081)
+- Registration is 2-step OTP-based:
+  1. POST /register/request-otp {name, email, password, role, institution}
+  2. POST /register/verify-otp {email, otp}
+- POST /login {email, password} -> {token, role, user_id, name}
+- POST /logout — requires Authorization: Bearer <token>
+- POST /forgot-password/request-otp {email}
+- POST /forgot-password/reset {email, otp, new_password}
+- POST /predict, GET /explain?id=X, POST /whatif, GET /history — ALL require
+  header: Authorization: Bearer <token>
+- GET /report?id=X currently returns 501 (not built yet)
+- Error responses: {"success": false, "error": "message"} with proper HTTP
+  status codes (400/401/404/500)
+
+## DESIGN SYSTEM
+
+Visual reference: https://pulse-diagnose.lovable.app (look only — do not
+copy its React/TypeScript code, only the visual style and UX flow)
+
+Colors (already in frontend/css/style.css):
+
+- Background (navy): #0B1437
+- Card background: #112257
+- Primary accent (cyan): #00C2D4
+- Secondary accent (purple): #7C3AED
+- Success (green): #10B981 | Warning (amber): #F59E0B | Danger (red): #EF4444
+- Font: Inter or Poppins (Google Fonts)
+- Cards: 16px rounded corners, glassmorphism, glowing top border accent
+
+## SESSION HANDLING
+
+Store the session token in sessionStorage (not localStorage) — clears when
+the browser tab closes, appropriate for a medical app. Attach it as an
+Authorization: Bearer <token> header on every protected API call.
+
+## GENERAL WORKING STYLE
+
+- This is real, working software, not a toy demo — treat error handling,
+  input validation, and correctness as required, not optional.
+- Always test what you build yourself (using the browser tool or terminal)
+  before saying a task is done. Report REAL results, not "should work."
+- If anything is ambiguous or conflicts with what you find in the existing
+  codebase, ask rather than guessing.
+- Work in small stages when a task is large — build a few files, show me
+  the result, then continue, rather than one giant unreviewed batch.

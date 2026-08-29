@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare two patient diagnosis results side-by-side on Pulse XAI.">
+  <title>Patient Compare — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container main-content">
+    <div class="app-layout grid">
+
+      <!-- Sidebar -->
+      <aside data-include="inc/sidebar.html"></aside>
+
+      <!-- Main Content -->
+      <main>
+        <div class="card">
+
+          <!-- Header -->
+          <div style="margin-bottom:24px;">
+            <h2 style="margin-bottom:4px;">Patient Compare ⚖️</h2>
+            <p class="text-secondary">Side-by-side diagnosis analysis and feature comparison</p>
+          </div>
+
+          <!-- Patient Selectors -->
+          <div style="display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; margin-bottom:24px;">
+            <div style="flex:1; min-width:160px;">
+              <label class="form-label">Patient A</label>
+              <select id="patientA" class="form-control"></select>
+            </div>
+            <div style="flex:1; min-width:160px;">
+              <label class="form-label">Patient B</label>
+              <select id="patientB" class="form-control"></select>
+            </div>
+            <div>
+              <button id="compareBtnTop" class="btn btn-gradient btn-auto" style="padding:11px 28px;">
+                ⚖️ Compare
+              </button>
+            </div>
+          </div>
+
+          <!-- Comparison Cards -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+            <div class="card" id="cardA" style="min-height:280px;">
+              <div id="cardAHeader" style="margin-bottom:16px; color:var(--text-secondary); font-size:0.9rem;">
+                Select Patient A to compare
+              </div>
+              <div id="cardABody" style="height:220px;"></div>
+            </div>
+            <div class="card card-purple" id="cardB" style="min-height:280px;">
+              <div id="cardBHeader" style="margin-bottom:16px; color:var(--text-secondary); font-size:0.9rem;">
+                Select Patient B to compare
+              </div>
+              <div id="cardBBody" style="height:220px;"></div>
+            </div>
+          </div>
+
+          <!-- Key Differences -->
+          <div class="card" id="keyDiffs" style="padding:20px;">
+            <h3 style="margin-bottom:12px;">Key Differences</h3>
+            <ul id="diffList" style="color:var(--text-secondary); padding-left:20px; line-height:2;">
+              <li>Select two patients and click Compare to see feature differences.</li>
+            </ul>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/compare.js"></script>
+</body>
+</html>

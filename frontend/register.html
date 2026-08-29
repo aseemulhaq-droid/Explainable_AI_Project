@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create a new Pulse XAI account to access the Explainable AI Medical Diagnosis Platform.">
+  <title>Register — Pulse XAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="card auth-card auth-card-wide">
+
+      <!-- Header -->
+      <div class="auth-header">
+        <h1>Create <span class="text-cyan">Account</span></h1>
+        <p>Join the Explainable AI Diagnosis Platform</p>
+      </div>
+
+      <!-- Step Indicators -->
+      <div class="wizard-steps">
+        <div class="step-indicator active" id="wizStep1">
+          <div class="step-number">1</div>
+          <span>Your Details</span>
+        </div>
+        <div class="step-indicator" id="wizStep2">
+          <div class="step-number">2</div>
+          <span>Verify Email</span>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div id="errorAlert"   class="alert alert-error   hidden" role="alert"></div>
+      <div id="successAlert" class="alert alert-success hidden" role="status"></div>
+
+      <!-- ── STEP 1: Registration Details ── -->
+      <div id="step1">
+        <form id="registerFormStep1" novalidate>
+
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input type="text" id="name" class="form-control" required
+                   autocomplete="name" placeholder="Dr. Jane Smith">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" class="form-control" required
+                   autocomplete="email" placeholder="jane.smith@hospital.com">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" id="password" class="form-control" required
+                     autocomplete="new-password" minlength="8"
+                     placeholder="Min. 8 characters">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="confirm_password">Confirm Password</label>
+              <input type="password" id="confirm_password" class="form-control" required
+                     autocomplete="new-password" minlength="8"
+                     placeholder="Repeat password">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="role">Role</label>
+            <select id="role" class="form-control" required>
+              <option value="doctor">Doctor</option>
+              <option value="admin">Administrator</option>
+              <option value="researcher">Researcher</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="institution">Institution <span class="text-secondary">(optional)</span></label>
+            <input type="text" id="institution" class="form-control"
+                   placeholder="General Hospital or University Name">
+          </div>
+
+          <button type="submit" id="registerStep1Btn" class="btn btn-primary">
+            Continue → Send Verification Code
+          </button>
+        </form>
+      </div>
+
+      <!-- ── STEP 2: OTP Verification ── -->
+      <div id="step2" class="hidden">
+        <div class="otp-intro">
+          <p>We've sent a 6-digit code to <strong id="otpEmailHint"></strong>.</p>
+          <p class="otp-hint">Check your inbox. In development mode, check <code>history/latest_otp.json</code>.</p>
+        </div>
+
+        <form id="registerFormStep2" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="otp">Verification Code</label>
+            <input type="text" id="otp" class="form-control otp-input" required
+                   inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                   title="6-digit code" placeholder="000000" autofocus>
+          </div>
+
+          <button type="submit" id="registerStep2Btn" class="btn btn-primary">
+            Verify &amp; Create Account
+          </button>
+
+          <div class="auth-link-row auth-link-row-center" style="margin-top:16px;">
+            <a href="#" id="resendOtpLink">Resend code</a>
+            <span class="link-separator">·</span>
+            <a href="#" id="backToRegisterLink">← Back to form</a>
+          </div>
+        </form>
+      </div>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script>
+    // Back button — show step 1 again
+    document.getElementById('backToRegisterLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step1').classList.remove('hidden');
+      document.getElementById('wizStep1').classList.add('active');
+      document.getElementById('wizStep2').classList.remove('active');
+      clearAuthAlerts();
+    });
+  </script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
