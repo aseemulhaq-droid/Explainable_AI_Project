@@ -443,3 +443,30 @@ def get_admin_stats():
             }
     finally:
         conn.close()
+
+
+def delete_diagnosis(diagnosis_id, user_id, role):
+    """
+    Delete a diagnosis. Doctors can only delete their own records.
+    Admins/Researchers can delete any record.
+    Returns True if deleted, False if not found or unauthorized.
+    """
+    if isinstance(diagnosis_id, str):
+        cleaned = "".join(filter(str.isdigit, diagnosis_id))
+        if cleaned:
+            diagnosis_id = int(cleaned)
+
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            if role == "doctor":
+                sql = "DELETE FROM diagnoses WHERE diagnosis_id = %s AND diagnosed_by = %s"
+                cursor.execute(sql, (diagnosis_id, user_id))
+            else:
+                sql = "DELETE FROM diagnoses WHERE diagnosis_id = %s"
+                cursor.execute(sql, (diagnosis_id,))
+            
+            conn.commit()
+            return cursor.rowcount > 0
+    finally:
+        conn.close()

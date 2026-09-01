@@ -1,6 +1,6 @@
 # Task 3 — Manual Test Checklist & PowerShell Commands
 
-Follow these steps in order to test the full Task 3 Backend API flow on `http://localhost:8081`.
+Follow these steps in order to test the full Task 3 Backend API flow on `http://localhost:8080`.
 
 ---
 

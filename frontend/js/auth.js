@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // wire up password toggle and role selector UI
 document.addEventListener('DOMContentLoaded', () => {
+    // Clear credentials on load to prevent autofill persistence after logout
+    const emailEl = document.getElementById('email');
+    const passEl  = document.getElementById('password');
+    if (emailEl)  { setTimeout(() => { emailEl.value = ''; }, 50); }
+    if (passEl)   { setTimeout(() => { passEl.value = ''; }, 50); }
+
     const toggle = document.getElementById('togglePassword');
     if (toggle) {
         toggle.addEventListener('click', () => {

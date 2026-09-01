@@ -44,6 +44,8 @@ from server.routes import history        as history_route
 from server.routes import report         as report_route
 from server.routes import dev_login      as dev_login_route
 from server.routes import admin          as admin_route
+from server.routes import stats          as stats_route
+from server.routes import delete_diagnosis as delete_diagnosis_route
 
 # ---------------------------------------------------------------------------
 # ROUTE TABLE  →  (METHOD, PATH) : handler_fn(handler)
@@ -59,7 +61,9 @@ ROUTE_TABLE = {
     ("GET",  "/explain"):                      explain_route.handle,
     ("POST", "/whatif"):                       whatif_route.handle,
     ("GET",  "/history"):                      history_route.handle,
+    ("POST", "/history/remove"):               delete_diagnosis_route.handle,
     ("GET",  "/report"):                       report_route.handle,
+    ("GET",  "/stats"):                        stats_route.handle,
     ("POST", "/dev-login"):                     dev_login_route.handle,
     ("GET",  "/admin/users"):                   admin_route.handle_users,
     ("POST", "/admin/users/status"):            admin_route.handle_status,

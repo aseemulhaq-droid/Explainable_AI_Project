@@ -67,11 +67,27 @@ function renderHistoryRows(rows) {
       <td><div class="confidence-cell"><div class="confidence-bar"><div class="confidence-fill" style="width:${confidencePct}%;"></div></div><div class="confidence-text">${confidence!==null?confidencePct+'%':'—'}</div></div></td>
       <td><span class="risk-badge ${riskClass}">${r.risk_level||'—'}</span></td>
       <td>${r.date||'—'}</td>
-      <td><button class="view-btn" data-id="${r.diagnosis_id}">View</button></td>
+      <td>
+        <button class="view-btn" data-id="${r.diagnosis_id}">View</button>
+        <button class="remove-btn" data-id="${r.diagnosis_id}" style="background-color: var(--accent-red); margin-left: 8px;">Remove</button>
+      </td>
     `;
 
     tr.querySelector('.view-btn')?.addEventListener('click', (e) => { e.stopPropagation(); showDetailRemote(e.currentTarget.dataset.id); });
-    tr.addEventListener('click', (e) => { if (e.target.tagName!=='INPUT' && !e.target.classList.contains('view-btn')) showDetail(r); });
+    tr.querySelector('.remove-btn')?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const did = e.currentTarget.dataset.id;
+      if (confirm('Are you sure you want to remove this diagnosis record?')) {
+        const resp = await authFetch('/history/remove', { method: 'POST', body: JSON.stringify({ diagnosis_id: did }) });
+        if (resp && resp.success) {
+          // Refresh history
+          initHistory();
+        } else {
+          alert(resp.error || 'Failed to delete record.');
+        }
+      }
+    });
+    tr.addEventListener('click', (e) => { if (e.target.tagName!=='INPUT' && !e.target.classList.contains('view-btn') && !e.target.classList.contains('remove-btn')) showDetail(r); });
     tbody.appendChild(tr);
   });
 }

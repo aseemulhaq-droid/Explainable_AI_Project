@@ -107,10 +107,16 @@ function requireAuth() {
 }
 
 function logout() {
-    authFetch('/logout', { method: 'POST' }).then(() => {
-        sessionStorage.clear();
-        window.location.href = 'login.html';
-    });
+    // Fire logout request but don't wait — always redirect regardless of server response
+    try { authFetch('/logout', { method: 'POST' }).catch(() => {}); } catch(e) {}
+    // Clear all session and auth-related localStorage keys
+    sessionStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('name');
+    localStorage.removeItem('user_id');
+    // Redirect with cache-buster so browser doesn't restore cached page state
+    window.location.replace('login.html?logout=' + Date.now());
 }
 
 // Highlight active nav link in sidebar based on current location

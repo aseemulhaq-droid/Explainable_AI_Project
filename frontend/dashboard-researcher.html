@@ -3,11 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Pulse XAI Researcher Dashboard — model metrics, LIME analysis, and dataset insights.">
+  <meta name="description" content="Pulse XAI Researcher Dashboard — model metrics, LIME analysis, dataset insights, and comprehensive analytics.">
   <title>Researcher Dashboard — Pulse XAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Analytics section styles */
+    .analytics-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .analytics-badge {
+      background: linear-gradient(135deg, rgba(0,194,212,0.15), rgba(124,58,237,0.15));
+      border: 1px solid rgba(0,194,212,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .chart-card {
+      background: var(--bg-color-card);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .chart-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    }
+    .chart-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+    .chart-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 20px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+    .section-divider span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
   <div class="container main-content">
@@ -25,7 +94,7 @@
             <h2 style="margin-bottom:4px;">
               Researcher Dashboard <span style="color:var(--accent-cyan);">📊</span>
             </h2>
-            <p class="text-secondary">Model performance metrics, LIME analysis, and dataset insights</p>
+            <p class="text-secondary">Model performance metrics, LIME analysis, and comprehensive research analytics</p>
           </div>
           <a href="new-diagnosis.html" class="btn btn-gradient btn-auto">
             🔬 Run Diagnosis
@@ -56,12 +125,12 @@
           </div>
         </section>
 
-        <!-- Charts Row -->
+        <!-- Charts Row — LIME + Risk -->
         <section class="grid grid-cols-2 mb-3">
           <div class="card">
             <h4 class="mb-1">Feature Importance (LIME)</h4>
-            <p class="small text-secondary mb-2">Aggregated feature contributions across all models</p>
-            <div id="limeOverview">
+            <p class="small text-secondary mb-2">Aggregated feature contributions across all diagnoses</p>
+            <div id="limeOverview" style="height:240px;">
               <div class="chart-placeholder">
                 <div class="chart-placeholder-icon">📊</div>
                 <span>Loading LIME overview...</span>
@@ -72,7 +141,7 @@
           <div class="card">
             <h4 class="mb-1">Risk Distribution Heatmap</h4>
             <p class="small text-secondary mb-2">Risk level breakdown per disease model</p>
-            <div id="riskHeatmap">
+            <div id="riskHeatmap" style="height:240px;">
               <div class="chart-placeholder">
                 <div class="chart-placeholder-icon">🗺️</div>
                 <span>Loading heatmap...</span>
@@ -83,7 +152,7 @@
         </section>
 
         <!-- Recent Analyses Table -->
-        <section class="card">
+        <section class="card mb-3">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
             <div>
               <h3 style="margin-bottom:3px;">Recent Analyses</h3>
@@ -100,6 +169,95 @@
             </div>
           </div>
         </section>
+
+        <!-- ════════════════════════════════════════════════════════════════ -->
+        <!--  ANALYTICS SECTION                                              -->
+        <!-- ════════════════════════════════════════════════════════════════ -->
+        <div id="analyticsSection">
+
+          <div class="section-divider">
+            <span>📈 Research Analytics</span>
+          </div>
+
+          <!-- Analytics header -->
+          <div class="analytics-header mb-3">
+            <div>
+              <h3 style="margin-bottom:4px;">Comprehensive Analytics</h3>
+              <p class="small text-secondary">Cross-disease analysis, trends, demographics, and statistical insights</p>
+            </div>
+            <span class="analytics-badge">Live Data</span>
+          </div>
+
+          <!-- Analytics stat cards row -->
+          <div id="analyticsStats" class="grid grid-cols-4 mb-3">
+            <!-- Populated by JS -->
+            <div class="card" style="text-align:center;"><div class="spinner" style="margin:16px auto;"></div></div>
+            <div class="card" style="text-align:center;"><div class="spinner" style="margin:16px auto;"></div></div>
+            <div class="card" style="text-align:center;"><div class="spinner" style="margin:16px auto;"></div></div>
+            <div class="card" style="text-align:center;"><div class="spinner" style="margin:16px auto;"></div></div>
+          </div>
+
+          <!-- Row 1: Disease Distribution + Risk Statistics -->
+          <div class="grid grid-cols-2 mb-3">
+            <div class="chart-card">
+              <h4>Disease Distribution</h4>
+              <p>Proportion of predictions across all disease models</p>
+              <div id="chartDiseaseDistribution" style="height:240px; position:relative;">
+                <div class="chart-placeholder"><div class="spinner"></div><span>Loading...</span></div>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4>Risk Level Statistics</h4>
+              <p>High / Medium / Low risk breakdown per disease</p>
+              <div id="chartRiskStats" style="height:240px; position:relative;">
+                <div class="chart-placeholder"><div class="spinner"></div><span>Loading...</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Prediction Trend (full width) -->
+          <div class="chart-card mb-3">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0;">
+              <div>
+                <h4>Prediction Trends</h4>
+                <p>Monthly prediction volume over time</p>
+              </div>
+              <span class="badge badge-cyan" style="animation:none; font-size:0.72rem;">Monthly View</span>
+            </div>
+            <div id="chartPredictionTrend" style="height:200px; position:relative;">
+              <div class="chart-placeholder"><div class="spinner"></div><span>Loading trend data...</span></div>
+            </div>
+          </div>
+
+          <!-- Row 3: Patient Demographics — Gender + Age -->
+          <div class="grid grid-cols-2 mb-3">
+            <div class="chart-card">
+              <h4>Gender Distribution</h4>
+              <p>Patient gender breakdown across all diagnoses</p>
+              <div id="chartGender" style="height:200px; position:relative;">
+                <div class="chart-placeholder"><div class="spinner"></div><span>Loading...</span></div>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4>Age Group Distribution</h4>
+              <p>Patient age bracket frequency</p>
+              <div id="chartAge" style="height:200px; position:relative;">
+                <div class="chart-placeholder"><div class="spinner"></div><span>Loading...</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 4: Key Research Insights -->
+          <div class="card mb-3">
+            <h3 style="margin-bottom:4px;">📋 Key Research Insights</h3>
+            <p class="small text-secondary" style="margin-bottom:0;">Automatically derived from the current dataset</p>
+            <div id="analyticsInsights">
+              <div class="chart-placeholder" style="height:80px;"><div class="spinner"></div><span>Calculating insights...</span></div>
+            </div>
+          </div>
+
+        </div>
+        <!-- end #analyticsSection -->
 
       </main>
     </div>

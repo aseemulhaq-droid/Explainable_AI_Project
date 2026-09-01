@@ -56,11 +56,23 @@ def _normalize(disease: str, raw_features: dict) -> tuple[np.ndarray, list[str]]
     col_max = norm["col_max"]
     denom = np.where((col_max - col_min) == 0, 1.0, col_max - col_min)
 
-    raw = np.array(
-        [float(raw_features.get(f, raw_features.get(f.replace("_", ""), 0.0)))
-         for f in feature_names],
-        dtype=float
-    )
+    raw_list = []
+    for i, f in enumerate(feature_names):
+        # The frontend might send 'radius_mean' but the model expects 'x.radius_mean'
+        alt_f = f.replace("x.", "")
+        val = raw_features.get(f)
+        if val is None:
+            val = raw_features.get(alt_f)
+        if val is None:
+            val = raw_features.get(f.replace("_", ""))
+            
+        if val is None:
+            # Use midpoint (average) for missing features (like the 25 hidden breast cancer features)
+            val = (col_min[i] + col_max[i]) / 2.0
+            
+        raw_list.append(float(val))
+        
+    raw = np.array(raw_list, dtype=float)
     normalised = np.clip((raw - col_min) / denom, 0.0, 1.0)
     return normalised, feature_names
 

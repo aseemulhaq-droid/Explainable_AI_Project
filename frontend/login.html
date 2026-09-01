@@ -18,7 +18,7 @@
       <div class="auth-brand">
         <div class="brand-logo">XAI</div>
         <h1>Pulse XAI</h1>
-        <p class="muted">XAI Medical Diagnosis System · Cardiff Met / ICBT</p>
+        <p class="muted">XAI Medical Diagnosis System </p>
       </div>
 
       <!-- Alerts -->
@@ -26,17 +26,17 @@
       <div id="successAlert" class="alert alert-success hidden" role="status"></div>
 
       <!-- Login Form -->
-      <form id="loginForm" novalidate>
+      <form id="loginForm" novalidate autocomplete="off">
 
         <!-- Role Selector (above form for clarity) -->
         <div style="margin-bottom:20px;">
           <label class="form-label" style="margin-bottom:10px;">Login as</label>
           <div class="role-selector" style="justify-content:flex-start; margin-top:0; gap:8px;">
-            <button type="button" data-role="doctor"     class="role-btn active">👨‍⚕️ Doctor</button>
-            <button type="button" data-role="admin"      class="role-btn">🛡️ Admin</button>
+            <button type="button" data-role="admin"      class="role-btn active">🛡️ Admin</button>
+            <button type="button" data-role="doctor"     class="role-btn"> 👨‍⚕️ Doctor</button>
             <button type="button" data-role="researcher" class="role-btn">🔬 Researcher</button>
           </div>
-          <input type="hidden" id="selectedRole" value="doctor">
+          <input type="hidden" id="selectedRole" value="admin">
         </div>
 
         <div class="form-group">
@@ -44,7 +44,7 @@
           <div class="input-with-icon">
             <span class="icon">✉️</span>
             <input type="email" id="email" class="form-control" required
-                   autocomplete="email" placeholder="you@hospital.com">
+                   autocomplete="off" placeholder="you@hospital.com">
           </div>
         </div>
 
@@ -53,7 +53,7 @@
           <div class="input-with-icon">
             <span class="icon">🔒</span>
             <input type="password" id="password" class="form-control" required
-                   autocomplete="current-password" placeholder="••••••••">
+                   autocomplete="new-password" placeholder="••••••••">
             <button type="button" id="togglePassword" class="icon-btn" title="Show/hide password">👁️</button>
           </div>
         </div>
@@ -78,5 +78,14 @@
 
   <script src="js/utils.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    // Clear any leftover credentials on login page load (prevents autofill persistence after logout)
+    window.addEventListener('DOMContentLoaded', () => {
+      const emailEl = document.getElementById('email');
+      const passwordEl = document.getElementById('password');
+      if (emailEl) { emailEl.value = ''; emailEl.setAttribute('autocomplete', 'off'); }
+      if (passwordEl) { passwordEl.value = ''; passwordEl.setAttribute('autocomplete', 'new-password'); }
+    });
+  </script>
 </body>
 </html>
